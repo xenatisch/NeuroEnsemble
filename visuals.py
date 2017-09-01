@@ -20,11 +20,12 @@ from pandas import DataFrame
 
 from matplotlib.pyplot import (
     subplots, subplots_adjust, close as close_fig,
-    subplot2grid, figure,
-    gcf)
+    subplot2grid, figure
+)
 from matplotlib.collections import LineCollection
 from matplotlib.colors import LinearSegmentedColormap, ColorConverter
 import seaborn as sns
+
 
 from numba import jit
 

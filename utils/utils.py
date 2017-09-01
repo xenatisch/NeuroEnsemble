@@ -26,8 +26,7 @@ __all__ = [
     'StringOrIterable', 'Location', 'Iterable', 'logger', 'temp',
     'ListOfStringsOrNone', 'ListOfIntegersOrNone', 'Iterator',
     'Tuple', 'Union', 'List', 'ThreshType', 'Any', 'Dict', 'Type',
-    'RealNumberOrNone', 'RealNumber', 'Band', 'interpd',
-    'dedent_interpd', 'dedent_docstring'
+    'RealNumberOrNone', 'RealNumber', 'Band'
 ]
 
 

@@ -14,7 +14,7 @@ from numpy import (
     diff, max, float32, ascontiguousarray,
     flipud, exp, dot, mean, linspace, empty,
     NaN, Inf, arange, isscalar, asarray,
-    ndarray, float64, correlate, zeros, divide, abs
+    ndarray, float64, correlate, zeros, divide, abs, issubdtype
 )
 from numpy.linalg import norm
 # from numpy.lib.stride_tricks import as_strided

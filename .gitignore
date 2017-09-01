@@ -144,3 +144,4 @@ cfunctions.cpython-36m-darwin.so
 analyser.py
 _analyser.py
 cfunctions.pyx
+/.gitconfig

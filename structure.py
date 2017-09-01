@@ -386,6 +386,129 @@ class Signal(metaclass=ConstructorMeta):
 
         return self.data.plot(ax=ax, *args, **kwargs)
 
+    def spectrogram(self, channel, NFFT=None, detrend=None, window=None,
+             noverlap=None, pad_to=None, sides=None, scale_by_freq=None,
+             mode=None):
+        """
+        Compute a spectrogram.
+    
+        Compute and plot a spectrogram of data in x.  Data are split into
+        NFFT length segments and the spectrum of each section is
+        computed.  The windowing function window is applied to each
+        segment, and the amount of overlap of each segment is
+        specified with noverlap.
+    
+        Parameters
+        ----------
+        @param channel: Channel names
+        @type channel: 1-D array or sequence.
+
+        @param window: A function or a vector of length *NFFT*. To create window
+                       vectors see :func:`window_hanning`, :func:`window_none`,
+                       :func:`numpy.blackman`, :func:`numpy.hamming`,
+                       :func:`numpy.bartlett`, :func:`scipy.signal`,
+                       :func:`scipy.signal.get_window`, etc. The default is
+                       :func:`window_hanning`.  If a function is passed as the
+                       argument, it must take a data segment as an argument and
+                       return the windowed version of the segment.
+        @type window: callable or ndarray
+    
+        @param sides: 
+            Specifies which sides of the spectrum to return.  Default gives the
+            default behavior, which returns one-sided for real data and both
+            for complex data.  'onesided' forces the return of a one-sided
+            spectrum, while 'twosided' forces two-sided.
+        @type sides: [ 'default' | 'onesided' | 'twosided' ]
+    
+        @param pad_to: 
+            The number of points to which the data segment is padded when
+            performing the FFT.  This can be different from *NFFT*, which
+            specifies the number of data points used.  While not increasing
+            the actual resolution of the spectrum (the minimum distance between
+            resolvable peaks), this can give more points in the plot,
+            allowing for more detail. This corresponds to the *n* parameter
+            in the call to ``fft()``. The default is ``None``, which sets ``pad_to``
+            equal to ``NFFT``.
+        @type pad_to: int
+
+        @param NFFT: 
+            The number of data points used in each block for the FFT.
+            A power 2 is most efficient.  The default value is 256.
+            This should *NOT* be used to get zero padding, or the scaling of the
+            result will be incorrect. Use ``pad_to`` for this instead.
+        @type NFFT: int
+    
+        @param detrend: 
+            The function applied to each segment before fft-ing,
+            designed to remove the mean or linear trend.  Unlike in
+            MATLAB, where the *detrend* parameter is a vector, in
+            matplotlib is it a function.  The :mod:`~matplotlib.pylab`
+            module defines :func:`~matplotlib.pylab.detrend_none`,
+            :func:`~matplotlib.pylab.detrend_mean`, and
+            :func:`~matplotlib.pylab.detrend_linear`, but you can use
+            a custom function as well.  You can also use a string to choose
+            one of the functions.  'default', 'constant', and 'mean' call
+            :func:`~matplotlib.pylab.detrend_mean`.  'linear' calls
+            :func:`~matplotlib.pylab.detrend_linear`.  'none' calls
+            :func:`~matplotlib.pylab.detrend_none`.
+        @type detrend: {'default', 'constant', 'mean', 'linear', 'none'} or callable
+    
+        @param scale_by_freq: optional
+            Specifies whether the resulting density values should be scaled
+            by the scaling frequency, which gives density in units of Hz^-1.
+            This allows for integration over the returned frequency values.
+            The default is True for MATLAB compatibility.
+        @type scale_by_freq: bool
+    
+        @param noverlap: optional
+            The number of points of overlap between blocks.  The default
+            value is 128.
+        @type noverlap: int
+            
+        @param mode: optional
+            What sort of spectrum to use, default is 'psd'.
+                'psd'
+                    Returns the power spectral density.
+    
+                'complex'
+                    Returns the complex-valued frequency spectrum.
+    
+                'magnitude'
+                    Returns the magnitude spectrum.
+    
+                'angle'
+                    Returns the phase spectrum without unwrapping.
+    
+                'phase'
+                    Returns the phase spectrum with unwrapping.
+        @type mode: str
+    
+        Returns
+        -------
+        spectrum : array_like
+            2-D array, columns are the periodograms of successive segments.
+    
+        freqs : array_like
+            1-D array, frequencies corresponding to the rows in *spectrum*.
+    
+        t : array_like
+            1-D array, the times corresponding to midpoints of segments
+            (i.e the columns in *spectrum*).
+        
+        Notes
+        -----
+        detrend and scale_by_freq only apply when *mode* is set to 'psd'.
+    
+        References
+        ----------
+        MatPlotLib
+        """
+        from matplotlib.mlab import specgram
+
+        return specgram(self[channel], Fs=self.fs, NFFT=NFFT, detrend=detrend,
+                        window=window, noverlap=noverlap, pad_to=pad_to,
+                        sides=sides, scale_by_freq=scale_by_freq, mode=mode)
+
     def filter_by_freq(self, band: Band):
         """
         The signal is transformed using a 4th order Butterworth filter such that it 
